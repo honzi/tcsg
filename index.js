@@ -1,5 +1,18 @@
 'use strict';
 
+function resetAll(){
+    year = new Date().getFullYear();
+
+    document.getElementById('day').value = 0;
+    document.getElementById('year').value = year;
+
+    for(let i = 0; i < rowCount; i++){
+        document.getElementById('checkbox-' + i).checked = false;
+    }
+
+    updateTable();
+}
+
 function updateCheckboxes(id){
     let checkedBoxes = 0;
 
@@ -71,12 +84,10 @@ const rowCount = 16;
 let year = 0;
 
 window.onload = function(){
-    year = new Date().getFullYear();
-
     document.getElementById('day').onchange = updateTable;
+    document.getElementById('resetAll').onclick = resetAll;
 
     const yearElement = document.getElementById('year');
-    yearElement.value = year;
     yearElement.oninput = function(){
         year = Number(this.value);
         updateTable();
@@ -107,5 +118,5 @@ window.onload = function(){
         };
     }
 
-    updateTable();
+    resetAll();
 };
