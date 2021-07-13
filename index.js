@@ -71,7 +71,7 @@ function updateTable(){
 
             document.getElementById('review-' + i).innerHTML = reviews[reviewCount]
               + ' effective 7/1/' + semesterYear + ' due ' + semsterDue + ' ' + (semesterYear - 1)
-              + '<br>review period from 7/1/' + year + ' through 6/30/' + (semesterYear - 1);
+              + ' review period from 7/1/' + year + ' through 6/30/' + (semesterYear - 1);
 
             reviewCount += 1;
         }
@@ -109,7 +109,7 @@ window.onload = function(){
     for(let i = 0; i < rowCount; i++){
         tableRows += '<tr><td><input id=checkbox-' + i + ' type=checkbox>';
         tableRows += '<td id=semesterCount-' + i + '>';
-        tableRows += '<td id=semester-' + i + '>';
+        tableRows += '<td class=left id=semester-' + i + '>';
         tableRows += '<td id=review-' + i + '>';
     }
     document.getElementById('tableBody').innerHTML = tableRows;
