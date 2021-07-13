@@ -55,11 +55,13 @@ function updateTable(){
             semesterYear += 1;
         }
 
+        let semesterCountDisplay = '';
         if(!document.getElementById('checkbox-' + i).checked){
             semesterCount += 1;
+            semesterCountDisplay = semesterCount;
         }
 
-        document.getElementById('semesterCount-' + i).textContent = semesterCount;
+        document.getElementById('semesterCount-' + i).textContent = semesterCountDisplay;
         document.getElementById('semester-' + i).textContent = semesters[semester] + ' ' + semesterYear;
 
         if(reviewSemesters.includes(i)){
