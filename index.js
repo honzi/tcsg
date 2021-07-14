@@ -56,31 +56,33 @@ function updateTable(){
         }
 
         let semesterCountDisplay = '';
+        let reviewDisplay = '';
         if(!document.getElementById('checkbox-' + i).checked){
             semesterCount += 1;
             semesterCountDisplay = semesterCount;
+
+            if(reviewSemesters.includes(semesterCount)){
+                const semsterDue = i === 3 || dayValue === 1
+                  ? semesters[1]
+                  : semesters[0];
+
+                reviewDisplay = reviews[reviewCount]
+                  + ' effective 7/1/' + semesterYear + ' due ' + semsterDue + ' ' + (semesterYear - 1)
+                  + ' review period from 7/1/' + year + ' through 6/30/' + (semesterYear - 1);
+
+                reviewCount += 1;
+            }
         }
+        document.getElementById('review-' + i).innerHTML = reviewDisplay;
 
         document.getElementById('semesterCount-' + i).textContent = semesterCountDisplay;
         document.getElementById('semester-' + i).textContent = semesters[semester] + ' ' + semesterYear;
-
-        if(reviewSemesters.includes(i)){
-            const semsterDue = i === 3 || dayValue === 1
-              ? semesters[1]
-              : semesters[0];
-
-            document.getElementById('review-' + i).innerHTML = reviews[reviewCount]
-              + ' effective 7/1/' + semesterYear + ' due ' + semsterDue + ' ' + (semesterYear - 1)
-              + ' review period from 7/1/' + year + ' through 6/30/' + (semesterYear - 1);
-
-            reviewCount += 1;
-        }
     }
 }
 
 const checkboxLimit = 4;
 const reviewSemesters = [
-  3, 7, 11,
+  4, 7, 11,
 ];
 const rowCount = 16;
 let year = 0;
