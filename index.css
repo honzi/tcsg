@@ -1,12 +1,13 @@
-body{
+body,
+.center{
     text-align: center;
-}
-.left{
-    text-align: left;
 }
 table{
     border-collapse: collapse;
     margin: auto;
+}
+tbody{
+    text-align: left;
 }
 td{
     border: 1px solid #000;

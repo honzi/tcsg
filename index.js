@@ -110,8 +110,8 @@ window.onload = function(){
     let tableRows = '';
     for(let i = 0; i < rowCount; i++){
         tableRows += '<tr><td><input id=checkbox-' + i + ' type=checkbox>';
-        tableRows += '<td id=semesterCount-' + i + '>';
-        tableRows += '<td class=left id=semester-' + i + '>';
+        tableRows += '<td class=center id=semesterCount-' + i + '>';
+        tableRows += '<td id=semester-' + i + '>';
         tableRows += '<td id=review-' + i + '>';
     }
     document.getElementById('tableBody').innerHTML = tableRows;
