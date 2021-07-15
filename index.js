@@ -33,16 +33,22 @@ function updateCheckboxes(id){
 
 function updateTable(){
     const dayValue = Number(document.getElementById('day').value);
-    let reviewCount = 0;
     const reviews = [
       'Merit',
       'Mid-career',
       'Final appraisal',
     ];
+    const reviewSemesters = [
+      2 + dayValue,
+      7,
+      11,
+    ];
     const semesters = [
       'Spring',
       'Fall',
     ];
+
+    let reviewCount = 0;
     let semesterYear = year;
     let semesterCount = 0;
 
@@ -51,49 +57,52 @@ function updateTable(){
           ? 1 - i % 2
           : i % 2;
 
+        let reviewDisplay = '';
+        let semesterCountDisplay = '';
+
         if(i > 0 && semester === 0){
             semesterYear += 1;
         }
 
-        let semesterCountDisplay = '';
-        let reviewDisplay = '';
         if(!document.getElementById('checkbox-' + i).checked){
             semesterCount += 1;
             semesterCountDisplay = semesterCount;
 
             if(reviewSemesters.includes(semesterCount)){
+                var semesterDue = semesters[0];
                 var yearDue = semesterYear;
                 var yearEffective = semesterYear + 1;
-                var semesterDue = semesters[0];
 
-                if(i === 3 || dayValue === 1){
+                if(semesterCount === reviewSemesters[0] || dayValue === 1){
                     semesterDue = semesters[1];
-                }
 
-                if(i === 3){
-                    yearDue -= 1;
+                }else if(semesterCount !== reviewSemesters[0] && dayValue === 0){
                     yearEffective -= 1;
                 }
 
-                reviewDisplay = reviews[reviewCount]
-                  + ' effective 7/1/' + yearEffective + ', due ' + semesterDue + ' ' + yearDue
-                  + ', review period from 7/1/' + year + ' through 6/30/' + yearDue;
+                reviewDisplay = reviews[reviewCount] + ' effective 7/1/' + yearEffective
+                  + ', due ' + semesterDue + ' ' + yearDue;
+
+                var reviewDue = '6/30/' + yearDue;
+                if(semesterCount !== reviewSemesters[0] && dayValue === 0){
+                    reviewDisplay += ' (Spring case)';
+                    reviewDue = '12/31/' + (yearDue - 1);
+                }
+                reviewDisplay += ', review period from ' + (dayValue * 6 + 1) + '/1/' + year
+                  + ' through ' + reviewDue;
 
                 reviewCount += 1;
             }
         }
-        document.getElementById('review-' + i).innerHTML = reviewDisplay;
 
+        document.getElementById('review-' + i).innerHTML = reviewDisplay;
         document.getElementById('semesterCount-' + i).textContent = semesterCountDisplay;
         document.getElementById('semester-' + i).textContent = semesters[semester] + ' ' + semesterYear;
     }
 }
 
-const checkboxLimit = 4;
-const reviewSemesters = [
-  4, 7, 11,
-];
-const rowCount = 16;
+let checkboxLimit = 4;
+let rowCount = 16;
 let year = 0;
 
 window.onload = function(){
