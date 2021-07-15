@@ -62,13 +62,22 @@ function updateTable(){
             semesterCountDisplay = semesterCount;
 
             if(reviewSemesters.includes(semesterCount)){
-                const semsterDue = i === 3 || dayValue === 1
-                  ? semesters[1]
-                  : semesters[0];
+                var yearDue = semesterYear;
+                var yearEffective = semesterYear + 1;
+                var semesterDue = semesters[0];
+
+                if(i === 3 || dayValue === 1){
+                    semesterDue = semesters[1];
+                }
+
+                if(i === 3){
+                    yearDue -= 1;
+                    yearEffective -= 1;
+                }
 
                 reviewDisplay = reviews[reviewCount]
-                  + ' effective 7/1/' + semesterYear + ' due ' + semsterDue + ' ' + (semesterYear - 1)
-                  + ' review period from 7/1/' + year + ' through 6/30/' + (semesterYear - 1);
+                  + ' effective 7/1/' + yearEffective + ', due ' + semesterDue + ' ' + yearDue
+                  + ', review period from 7/1/' + year + ' through 6/30/' + yearDue;
 
                 reviewCount += 1;
             }
