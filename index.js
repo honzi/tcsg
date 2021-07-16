@@ -71,13 +71,11 @@ function updateTable(){
             if(reviewSemesters.includes(semesterCount)){
                 var semesterDue = semesters[0];
                 var yearDue = semesterYear;
-                var yearEffective = semesterYear + 1;
+                var yearEffective = semesterYear;
 
                 if(semesterCount === reviewSemesters[0] || dayValue === 1){
                     semesterDue = semesters[1];
-
-                }else if(semesterCount !== reviewSemesters[0] && dayValue === 0){
-                    yearEffective -= 1;
+                    yearEffective += 1;
                 }
 
                 reviewDisplay = reviews[reviewCount] + ' effective 7/1/' + yearEffective
