@@ -73,7 +73,7 @@ function updateTable(){
             if(reviewSemesters.includes(semesterCount)){
                 var yearEffective = semesterYear;
 
-                if(semesterCount === reviewSemesters[0] || dayValue === 1){
+                if(semesterCount === i + 1 && (semesterCount === reviewSemesters[0] || dayValue === 1)){
                     yearEffective += 1;
                 }
 
