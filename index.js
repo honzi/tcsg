@@ -81,7 +81,7 @@ function updateTable(){
                   + ', due ' + semesterDisplay;
 
                 var reviewDue = '6/30/' + semesterYear;
-                if(semesterCount !== reviewSemesters[0] && dayValue === 0){
+                if(semester === 0){
                     reviewDisplay += ' (Spring case)';
                     reviewDue = '12/31/' + (semesterYear - 1);
                 }
