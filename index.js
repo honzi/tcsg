@@ -64,27 +64,26 @@ function updateTable(){
             semesterYear += 1;
         }
 
+        const semesterDisplay = semesters[semester] + ' ' + semesterYear;
+
         if(!document.getElementById('checkbox-' + i).checked){
             semesterCount += 1;
             semesterCountDisplay = semesterCount;
 
             if(reviewSemesters.includes(semesterCount)){
-                var semesterDue = semesters[0];
-                var yearDue = semesterYear;
                 var yearEffective = semesterYear;
 
                 if(semesterCount === reviewSemesters[0] || dayValue === 1){
-                    semesterDue = semesters[1];
                     yearEffective += 1;
                 }
 
                 reviewDisplay = reviews[reviewCount] + ' effective 7/1/' + yearEffective
-                  + ', due ' + semesterDue + ' ' + yearDue;
+                  + ', due ' + semesterDisplay;
 
-                var reviewDue = '6/30/' + yearDue;
+                var reviewDue = '6/30/' + semesterYear;
                 if(semesterCount !== reviewSemesters[0] && dayValue === 0){
                     reviewDisplay += ' (Spring case)';
-                    reviewDue = '12/31/' + (yearDue - 1);
+                    reviewDue = '12/31/' + (semesterYear - 1);
                 }
                 reviewDisplay += ', review period from ' + (dayValue * 6 + 1) + '/1/' + year
                   + ' through ' + reviewDue;
@@ -95,7 +94,7 @@ function updateTable(){
 
         document.getElementById('review-' + i).innerHTML = reviewDisplay;
         document.getElementById('semesterCount-' + i).textContent = semesterCountDisplay;
-        document.getElementById('semester-' + i).textContent = semesters[semester] + ' ' + semesterYear;
+        document.getElementById('semester-' + i).textContent = semesterDisplay;
     }
 }
 
