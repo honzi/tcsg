@@ -71,7 +71,7 @@ function updateTable(){
             semesterCountDisplay = semesterCount;
 
             if(reviewSemesters.includes(semesterCount)){
-                var yearEffective = semesterYear;
+                let yearEffective = semesterYear;
 
                 if(semesterCount === i + 1 && (semesterCount === reviewSemesters[0] || dayValue === 1)){
                     yearEffective += 1;
@@ -80,7 +80,7 @@ function updateTable(){
                 reviewDisplay = reviews[reviewCount] + ' effective 7/1/' + yearEffective
                   + ', due ' + semesterDisplay;
 
-                var reviewDue = '6/30/' + semesterYear;
+                let reviewDue = '6/30/' + semesterYear;
                 if(semester === 0){
                     reviewDisplay += ' (Spring case)';
                     reviewDue = '12/31/' + (semesterYear - 1);
