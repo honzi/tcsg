@@ -48,6 +48,8 @@ function updateTable(){
       'Fall',
     ];
 
+    let meritAdditional = 0;
+    let meritCount = 0;
     let reviewCount = 0;
     let semesterYear = year;
     let semesterCount = 0;
@@ -57,6 +59,7 @@ function updateTable(){
           ? 1 - i % 2
           : i % 2;
 
+        meritCount += 1;
         let reviewDisplay = '';
         let semesterCountDisplay = '';
 
@@ -70,14 +73,26 @@ function updateTable(){
             semesterCount += 1;
             semesterCountDisplay = semesterCount;
 
-            if(reviewSemesters.includes(semesterCount)){
-                let yearEffective = semesterYear;
+            if(reviewSemesters.includes(semesterCount)
+              || (reviewCount < 3 && meritCount === 4 && !reviewSemesters.includes(semesterCount + 1))){
+                let reviewType = reviews[reviewCount];
+                let reviewYearFrom = year;
 
+                if(reviewSemesters.includes(semesterCount)){
+                    reviewCount += 1;
+
+                }else if(reviewCount < 3 && meritCount === 4 && !reviewSemesters.includes(semesterCount + 1)){
+                    meritAdditional += 1;
+                    reviewType = reviews[0];
+                    reviewYearFrom += 1;
+                }
+
+                let yearEffective = semesterYear + meritAdditional;
                 if(semesterCount === i + 1 && (semesterCount === reviewSemesters[0] || dayValue === 1)){
                     yearEffective += 1;
                 }
 
-                reviewDisplay = reviews[reviewCount] + ' effective 7/1/' + yearEffective
+                reviewDisplay = reviewType + ' effective 7/1/' + yearEffective
                   + ', due ' + semesterDisplay;
 
                 let reviewDue = '6/30/' + semesterYear;
@@ -85,10 +100,10 @@ function updateTable(){
                     reviewDisplay += ' (Spring case)';
                     reviewDue = '12/31/' + (semesterYear - 1);
                 }
-                reviewDisplay += ', review period from ' + (dayValue * 6 + 1) + '/1/' + year
+                reviewDisplay += ', review period from ' + (dayValue * 6 + 1) + '/1/' + reviewYearFrom
                   + ' through ' + reviewDue;
 
-                reviewCount += 1;
+                meritCount = 0;
             }
         }
 
