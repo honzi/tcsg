@@ -3,7 +3,7 @@
 function resetAll(){
     year = new Date().getFullYear();
 
-    document.getElementById('day').value = 0;
+    document.getElementById('day').value = 1;
     document.getElementById('year').value = year;
 
     for(let i = 0; i < rowCount; i++){
