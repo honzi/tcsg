@@ -32,6 +32,7 @@ function updateCheckboxes(id){
 }
 
 function updateTable(){
+    const tableContents = {};
     const dayValue = Number(document.getElementById('day').value);
     const reviews = [
       'Merit',
@@ -107,9 +108,17 @@ function updateTable(){
             }
         }
 
-        document.getElementById('review-' + i).innerHTML = reviewDisplay;
-        document.getElementById('semesterCount-' + i).textContent = semesterCountDisplay;
-        document.getElementById('semester-' + i).textContent = semesterDisplay;
+        tableContents[i] = {
+          'review': reviewDisplay,
+          'semesterCount': semesterCountDisplay,
+          'semester': semesterDisplay,
+        };
+    }
+
+    for(const i in tableContents){
+        document.getElementById('review-' + i).innerHTML = tableContents[i]['review'];
+        document.getElementById('semesterCount-' + i).textContent = tableContents[i]['semesterCount'];
+        document.getElementById('semester-' + i).textContent = tableContents[i]['semester'];
     }
 }
 
