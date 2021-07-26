@@ -55,14 +55,18 @@ function updateTable(){
     let semesterYear = year;
     let semesterCount = 0;
 
+    // Semester and review calculation loop.
     for(let i = 0; i < rowCount; i++){
         const semester = dayValue === 1
           ? 1 - i % 2
           : i % 2;
 
         meritCount += 1;
-        let reviewDisplay = '';
+        let needsReview = false;
+        let reviewType = '';
+        let reviewYearFrom = year;
         let semesterCountDisplay = '';
+        let yearEffective = 0;
 
         if(i > 0 && semester === 0){
             semesterYear += 1;
@@ -76,8 +80,8 @@ function updateTable(){
 
             if(reviewSemesters.includes(semesterCount)
               || (reviewCount < 3 && meritCount === 4 && !reviewSemesters.includes(semesterCount + 1))){
-                let reviewType = reviews[reviewCount];
-                let reviewYearFrom = year;
+                needsReview = true;
+                reviewType = reviews[reviewCount];
 
                 if(reviewSemesters.includes(semesterCount)){
                     reviewCount += 1;
@@ -88,37 +92,48 @@ function updateTable(){
                     reviewYearFrom += 1;
                 }
 
-                let yearEffective = semesterYear + meritAdditional;
+                yearEffective = semesterYear + meritAdditional;
                 if(semesterCount === i + 1 && (semesterCount === reviewSemesters[0] || dayValue === 1)){
                     yearEffective += 1;
                 }
-
-                reviewDisplay = reviewType + ' effective 7/1/' + yearEffective
-                  + ', due ' + semesterDisplay;
-
-                let reviewDue = '6/30/' + semesterYear;
-                if(semester === 0){
-                    reviewDisplay += ' (Spring case)';
-                    reviewDue = '12/31/' + (semesterYear - 1);
-                }
-                reviewDisplay += ', review period from ' + (dayValue * 6 + 1) + '/1/' + reviewYearFrom
-                  + ' through ' + reviewDue;
 
                 meritCount = 0;
             }
         }
 
         tableContents[i] = {
-          'review': reviewDisplay,
-          'semesterCount': semesterCountDisplay,
-          'semester': semesterDisplay,
+          'needsReview': needsReview,
+          'reviewType': reviewType,
+          'reviewYearFrom': reviewYearFrom,
+          'semester': semester,
+          'semesterCountDisplay': semesterCountDisplay,
+          'semesterDisplay': semesterDisplay,
+          'semesterYear': semesterYear,
+          'yearEffective': yearEffective,
         };
     }
 
+    // Review string creation and row render loop.
     for(const i in tableContents){
-        document.getElementById('review-' + i).innerHTML = tableContents[i]['review'];
-        document.getElementById('semesterCount-' + i).textContent = tableContents[i]['semesterCount'];
-        document.getElementById('semester-' + i).textContent = tableContents[i]['semester'];
+        let reviewString = '';
+        const row = tableContents[i];
+
+        if(row['needsReview']){
+            reviewString = row['reviewType'] + ' effective 7/1/' + row['yearEffective']
+              + ', due ' + row['semesterDisplay'];
+
+            let reviewDue = '6/30/' + row['semesterYear'];
+            if(row['semester'] === 0){
+                reviewString += ' (Spring case)';
+                reviewDue = '12/31/' + (row['semesterYear'] - 1);
+            }
+            reviewString += ', review period from ' + (dayValue * 6 + 1) + '/1/' + row['reviewYearFrom']
+              + ' through ' + reviewDue;
+        }
+
+        document.getElementById('review-' + i).innerHTML = reviewString;
+        document.getElementById('semesterCount-' + i).textContent = tableContents[i]['semesterCountDisplay'];
+        document.getElementById('semester-' + i).textContent = tableContents[i]['semesterDisplay'];
     }
 }
 
