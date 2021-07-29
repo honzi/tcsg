@@ -49,14 +49,18 @@ function updateTable(){
       'Fall',
     ];
 
+    let addMeritsToYear = true;
     let meritAdditional = 0;
     let meritCount = 0;
+    let previousActiveSemester = 0;
     let reviewCount = 0;
     let semesterYear = year;
     let semesterCount = 0;
 
     // Semester and review calculation loop.
     for(let i = 0; i < rowCount; i++){
+        tableContents[i] = {};
+
         const semester = dayValue === 1
           ? 1 - i % 2
           : i % 2;
@@ -66,33 +70,56 @@ function updateTable(){
         let reviewType = '';
         let reviewYearFrom = year;
         let semesterCountDisplay = '';
-        let yearEffective = 0;
 
         if(i > 0 && semester === 0){
             semesterYear += 1;
         }
+        let yearEffective = semesterYear;
 
         const semesterDisplay = semesters[semester] + ' ' + semesterYear;
 
         if(!document.getElementById('checkbox-' + i).checked){
             semesterCount += 1;
             semesterCountDisplay = semesterCount;
+            previousActiveSemester = semesterCount - 1;
 
-            if(reviewSemesters.includes(semesterCount)
-              || (reviewCount < 3 && meritCount === 4 && !reviewSemesters.includes(semesterCount + 1))){
+            if(reviewCount === 0 && meritCount > 4){
+                tableContents[previousActiveSemester]['needsReview'] = true;
+                tableContents[previousActiveSemester]['reviewType'] = reviews[0];
+                tableContents[previousActiveSemester]['yearEffective'] += 1;
+                meritAdditional += 1;
+                addMeritsToYear = false;
+
+                for(var row = 0; row <= i - previousActiveSemester; row++){
+                    tableContents[previousActiveSemester + row]['meritCount'] = row;
+                    meritCount = row;
+                }
+            }
+
+            const isMeritAdditional = reviewCount < 3 && meritCount === 4 && !reviewSemesters.includes(semesterCount + 1);
+            const isReviewSemester =
+              (meritAdditional === 0 && semesterCount === reviewSemesters[0])
+              || (reviewCount > 0 && reviewSemesters.includes(semesterCount));
+
+            if(isReviewSemester || isMeritAdditional){
                 needsReview = true;
                 reviewType = reviews[reviewCount];
 
-                if(reviewSemesters.includes(semesterCount)){
+                if(isReviewSemester){
                     reviewCount += 1;
 
-                }else if(reviewCount < 3 && meritCount === 4 && !reviewSemesters.includes(semesterCount + 1)){
+                }else if(isMeritAdditional){
                     meritAdditional += 1;
                     reviewType = reviews[0];
                     reviewYearFrom += 1;
+                    if(i > 3){
+                        reviewCount += 1;
+                    }
+                    if(!addMeritsToYear){
+                        yearEffective += 1;
+                    }
                 }
 
-                yearEffective = semesterYear + meritAdditional;
                 if(semesterCount === i + 1 && (semesterCount === reviewSemesters[0] || dayValue === 1)){
                     yearEffective += 1;
                 }
@@ -101,7 +128,12 @@ function updateTable(){
             }
         }
 
+        if(addMeritsToYear){
+            yearEffective += meritAdditional;
+        }
+
         tableContents[i] = {
+          'meritCount': meritCount,
           'needsReview': needsReview,
           'reviewType': reviewType,
           'reviewYearFrom': reviewYearFrom,
