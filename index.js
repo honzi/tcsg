@@ -79,9 +79,9 @@ function updateTable(){
         const semesterDisplay = semesters[semester] + ' ' + semesterYear;
 
         if(!document.getElementById('checkbox-' + i).checked){
+            previousActiveSemester = semesterCount;
             semesterCount += 1;
             semesterCountDisplay = semesterCount;
-            previousActiveSemester = semesterCount - 1;
 
             if(reviewCount === 0 && meritCount > 4){
                 tableContents[previousActiveSemester]['needsReview'] = true;
