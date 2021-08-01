@@ -7,8 +7,8 @@ function resetAll(){
     document.getElementById('month').value = month;
     document.getElementById('year').value = year;
 
-    for(let i = 0; i < rowCount; i++){
-        document.getElementById('checkbox-' + i).checked = false;
+    for(let row = 0; row < rowCount; row++){
+        document.getElementById('checkbox-' + row).checked = false;
     }
 
     updateTable();
@@ -17,8 +17,8 @@ function resetAll(){
 function updateCheckboxes(id){
     let checkedBoxes = 0;
 
-    for(let i = 0; i < rowCount; i++){
-        if(document.getElementById('checkbox-' + i).checked){
+    for(let row = 0; row < rowCount; row++){
+        if(document.getElementById('checkbox-' + row).checked){
             checkedBoxes += 1;
         }
     }
@@ -61,12 +61,12 @@ function updateTable(){
     let semesterCount = 0;
 
     // Semester and review calculation loop.
-    for(let i = 0; i < rowCount; i++){
-        tableContents[i] = {};
+    for(let row = 0; row < rowCount; row++){
+        tableContents[row] = {};
 
         const semester = month === 7
-          ? 1 - i % 2
-          : i % 2;
+          ? 1 - row % 2
+          : row % 2;
 
         meritCount += 1;
         let needsReview = false;
@@ -74,14 +74,14 @@ function updateTable(){
         let reviewYearFrom = year;
         let semesterCountDisplay = '';
 
-        if(i > 0 && semester === 0){
+        if(row > 0 && semester === 0){
             semesterYear += 1;
         }
         let yearEffective = semesterYear;
 
         const semesterDisplay = semesters[semester] + ' ' + semesterYear;
 
-        if(!document.getElementById('checkbox-' + i).checked){
+        if(!document.getElementById('checkbox-' + row).checked){
             previousActiveSemester = semesterCount;
             semesterCount += 1;
             semesterCountDisplay = semesterCount;
@@ -93,9 +93,9 @@ function updateTable(){
                 meritAdditional += 1;
                 addMeritsToYear = false;
 
-                for(var row = 0; row <= i - previousActiveSemester; row++){
-                    tableContents[previousActiveSemester + row]['meritCount'] = row;
-                    meritCount = row;
+                for(var previousRow = 0; previousRow <= row - previousActiveSemester; previousRow++){
+                    tableContents[previousActiveSemester + previousRow]['meritCount'] = previousRow;
+                    meritCount = previousRow;
                 }
             }
 
@@ -115,7 +115,7 @@ function updateTable(){
                     meritAdditional += 1;
                     reviewType = reviews[0];
                     reviewYearFrom += 1;
-                    if(i > 3){
+                    if(row > 3){
                         reviewCount += 1;
                     }
                     if(!addMeritsToYear){
@@ -123,7 +123,7 @@ function updateTable(){
                     }
                 }
 
-                if(semesterCount === i + 1 && (semesterCount === reviewSemesters[0] || month === 7)){
+                if(semesterCount === row + 1 && (semesterCount === reviewSemesters[0] || month === 7)){
                     yearEffective += 1;
                 }
 
@@ -135,7 +135,7 @@ function updateTable(){
             yearEffective += meritAdditional;
         }
 
-        tableContents[i] = {
+        tableContents[row] = {
           'meritCount': meritCount,
           'needsReview': needsReview,
           'reviewType': reviewType,
@@ -149,26 +149,26 @@ function updateTable(){
     }
 
     // Review string creation and row render loop.
-    for(const i in tableContents){
+    for(const row in tableContents){
         let reviewString = '';
-        const row = tableContents[i];
+        const rowContents = tableContents[row];
 
-        if(row['needsReview']){
-            reviewString = row['reviewType'] + ' effective 7/1/' + row['yearEffective']
-              + ', due ' + row['semesterDisplay'];
+        if(rowContents['needsReview']){
+            reviewString = rowContents['reviewType'] + ' effective 7/1/' + rowContents['yearEffective']
+              + ', due ' + rowContents['semesterDisplay'];
 
-            let reviewDue = '6/30/' + row['semesterYear'];
-            if(row['semester'] === 0){
+            let reviewDue = '6/30/' + rowContents['semesterYear'];
+            if(rowContents['semester'] === 0){
                 reviewString += ' (Spring case)';
-                reviewDue = '12/31/' + (row['semesterYear'] - 1);
+                reviewDue = '12/31/' + (rowContents['semesterYear'] - 1);
             }
-            reviewString += ', review period from ' + month + '/1/' + row['reviewYearFrom']
+            reviewString += ', review period from ' + month + '/1/' + rowContents['reviewYearFrom']
               + ' through ' + reviewDue;
         }
 
-        document.getElementById('review-' + i).innerHTML = reviewString;
-        document.getElementById('semesterCount-' + i).textContent = tableContents[i]['semesterCountDisplay'];
-        document.getElementById('semester-' + i).textContent = tableContents[i]['semesterDisplay'];
+        document.getElementById('review-' + row).innerHTML = reviewString;
+        document.getElementById('semesterCount-' + row).textContent = tableContents[row]['semesterCountDisplay'];
+        document.getElementById('semester-' + row).textContent = tableContents[row]['semesterDisplay'];
     }
 }
 
@@ -201,16 +201,16 @@ window.onload = function(){
     };
 
     let tableRows = '';
-    for(let i = 0; i < rowCount; i++){
-        tableRows += '<tr><td><input id=checkbox-' + i + ' type=checkbox>'
-         + '<td class=center id=semesterCount-' + i + '>'
-         + '<td id=semester-' + i + '>'
-         + '<td id=review-' + i + '>';
+    for(let row = 0; row < rowCount; row++){
+        tableRows += '<tr><td><input id=checkbox-' + row + ' type=checkbox>'
+         + '<td class=center id=semesterCount-' + row + '>'
+         + '<td id=semester-' + row + '>'
+         + '<td id=review-' + row + '>';
     }
     document.getElementById('tableBody').innerHTML = tableRows;
 
-    for(let i = 0; i < rowCount; i++){
-        document.getElementById('checkbox-' + i).onchange = function(){
+    for(let row = 0; row < rowCount; row++){
+        document.getElementById('checkbox-' + row).onchange = function(){
             updateCheckboxes(this.id);
         };
     }
