@@ -1,9 +1,10 @@
 'use strict';
 
 function resetAll(){
+    month = 7;
     year = new Date().getFullYear();
 
-    document.getElementById('day').value = 1;
+    document.getElementById('month').value = month;
     document.getElementById('year').value = year;
 
     for(let i = 0; i < rowCount; i++){
@@ -33,17 +34,19 @@ function updateCheckboxes(id){
 
 function updateTable(){
     const tableContents = {};
-    const dayValue = Number(document.getElementById('day').value);
     const reviews = [
       'Merit',
       'Mid-career',
       'Final appraisal',
     ];
     const reviewSemesters = [
-      2 + dayValue,
+      2,
       7,
       11,
     ];
+    reviewSemesters[0] += month === 7
+      ? 1
+      : 0;
     const semesters = [
       'Spring',
       'Fall',
@@ -61,7 +64,7 @@ function updateTable(){
     for(let i = 0; i < rowCount; i++){
         tableContents[i] = {};
 
-        const semester = dayValue === 1
+        const semester = month === 7
           ? 1 - i % 2
           : i % 2;
 
@@ -120,7 +123,7 @@ function updateTable(){
                     }
                 }
 
-                if(semesterCount === i + 1 && (semesterCount === reviewSemesters[0] || dayValue === 1)){
+                if(semesterCount === i + 1 && (semesterCount === reviewSemesters[0] || month === 7)){
                     yearEffective += 1;
                 }
 
@@ -159,7 +162,7 @@ function updateTable(){
                 reviewString += ' (Spring case)';
                 reviewDue = '12/31/' + (row['semesterYear'] - 1);
             }
-            reviewString += ', review period from ' + (dayValue * 6 + 1) + '/1/' + row['reviewYearFrom']
+            reviewString += ', review period from ' + month + '/1/' + row['reviewYearFrom']
               + ' through ' + reviewDue;
         }
 
@@ -170,11 +173,12 @@ function updateTable(){
 }
 
 let checkboxLimit = 4;
+let month = 0;
 let rowCount = 16;
 let year = 0;
 
 window.onload = function(){
-    document.getElementById('day').onchange = updateTable;
+    document.getElementById('month').onchange = updateTable;
     document.getElementById('resetAll').onclick = resetAll;
 
     const yearElement = document.getElementById('year');
@@ -195,10 +199,10 @@ window.onload = function(){
 
     let tableRows = '';
     for(let i = 0; i < rowCount; i++){
-        tableRows += '<tr><td><input id=checkbox-' + i + ' type=checkbox>';
-        tableRows += '<td class=center id=semesterCount-' + i + '>';
-        tableRows += '<td id=semester-' + i + '>';
-        tableRows += '<td id=review-' + i + '>';
+        tableRows += '<tr><td><input id=checkbox-' + i + ' type=checkbox>'
+         + '<td class=center id=semesterCount-' + i + '>'
+         + '<td id=semester-' + i + '>'
+         + '<td id=review-' + i + '>';
     }
     document.getElementById('tableBody').innerHTML = tableRows;
 
