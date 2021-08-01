@@ -178,7 +178,10 @@ let rowCount = 16;
 let year = 0;
 
 window.onload = function(){
-    document.getElementById('month').onchange = updateTable;
+    document.getElementById('month').onchange = function(){
+        month = Number(this.value);
+        updateTable();
+    };
     document.getElementById('resetAll').onclick = resetAll;
 
     const yearElement = document.getElementById('year');
