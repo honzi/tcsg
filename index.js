@@ -163,7 +163,7 @@ function updateTable(){
                 reviewDue = '12/31/' + (rowContents['semesterYear'] - 1);
             }
             reviewString += ', review period from ' + month + '/1/' + rowContents['reviewYearFrom']
-              + ' through ' + reviewDue;
+              + ' to ' + reviewDue;
         }
 
         document.getElementById('review-' + row).innerHTML = reviewString;
