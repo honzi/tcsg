@@ -115,7 +115,7 @@ function updateTable(){
                     meritAdditional += 1;
                     reviewType = reviews[0];
                     reviewYearFrom += 1;
-                    if(row > 3 && reviewCount < 2){
+                    if(row > 3 && reviewCount < 1){
                         reviewCount += 1;
                     }
                     if(!addMeritsToYear){
