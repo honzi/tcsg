@@ -114,12 +114,14 @@ function updateTable(){
                 }else if(isMeritAdditional){
                     meritAdditional += 1;
                     reviewType = reviews[0];
-                    reviewYearFrom += 1;
                     if(row > 3 && reviewCount < 1){
                         reviewCount += 1;
                     }
                     if(!addMeritsToYear){
                         yearEffective += 1;
+                    }
+                    if(month === 7){
+                        reviewYearFrom += 1;
                     }
                 }
 
