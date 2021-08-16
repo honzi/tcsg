@@ -28,6 +28,7 @@ function updateCheckboxes(id){
         window.alert('A faculty member may be granted no more than two (2) years of extension during the probationary period.');
 
     }else{
+        checkedBox = checkedBoxes;
         updateTable();
     }
 }
@@ -137,6 +138,10 @@ function updateTable(){
             yearEffective += meritAdditional;
         }
 
+        if(checkedBox > 3 && reviewCount > 1){
+            yearEffective -= 1;
+        }
+
         tableContents[row] = {
           'meritCount': meritCount,
           'needsReview': needsReview,
@@ -175,6 +180,7 @@ function updateTable(){
 }
 
 let checkboxLimit = 4;
+let checkedBox = 0;
 let month = 0;
 let rowCount = 16;
 let year = 0;
