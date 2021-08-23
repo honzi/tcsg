@@ -73,6 +73,7 @@ function updateTable(){
         let needsReview = false;
         let reviewType = '';
         let reviewYearFrom = year;
+        let rowMonth = month;
         let semesterCountDisplay = '';
 
         if(row > 0 && semester === 0){
@@ -123,6 +124,9 @@ function updateTable(){
                     }
                     if(month === 7){
                         reviewYearFrom += 1;
+
+                    }else{
+                        rowMonth = 7;
                     }
                 }
 
@@ -144,6 +148,7 @@ function updateTable(){
 
         tableContents[row] = {
           'meritCount': meritCount,
+          'month': rowMonth,
           'needsReview': needsReview,
           'reviewType': reviewType,
           'reviewYearFrom': reviewYearFrom,
@@ -169,7 +174,7 @@ function updateTable(){
                 reviewString += ' (Spring case)';
                 reviewDue = '12/31/' + (rowContents['semesterYear'] - 1);
             }
-            reviewString += ', review period from ' + month + '/1/' + rowContents['reviewYearFrom']
+            reviewString += ', review period from ' + rowContents['month'] + '/1/' + rowContents['reviewYearFrom']
               + ' to ' + reviewDue;
         }
 
