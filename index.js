@@ -56,6 +56,7 @@ function updateTable(){
     let addMeritsToYear = true;
     let meritAdditional = 0;
     let meritCount = 0;
+    let midRow = 0;
     let midYear = false;
     let previousActiveSemester = 0;
     let reviewCount = 0;
@@ -132,6 +133,10 @@ function updateTable(){
                     if(reviewCount === 2){
                         reviewYearFrom = midYear;
                         rowMonth = 1;
+                        if(midYear !== false){
+                            rowMonth = tableContents[midRow]['month'];
+                            tableContents[midRow]['yearEffective'] += 1;
+                        }
                     }
                 }
 
@@ -150,7 +155,8 @@ function updateTable(){
             yearEffective -= 1;
         }
         if(midYear === false && reviewCount === 2){
-            midYear = yearEffective;
+            midRow = row;
+            midYear = semesterYear;
         }
 
         tableContents[row] = {
