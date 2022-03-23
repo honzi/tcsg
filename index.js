@@ -259,12 +259,15 @@ window.onload = function(){
 
         year = selected[0];
         yearElement.value = year;
-        month = selected[1];
+        month = selected[1] || 7;
         monthElement.value = month;
 
         for(let i = 2; i < selected.length; i++){
             if(i >= 6){
                 break;
+            }
+            if(selected[i] < 0 || selected[i] >= 16){
+                continue;
             }
             document.getElementById('checkbox-' + selected[i]).checked = true;
             updateCheckboxes('checkbox-' + selected[i]);
