@@ -195,6 +195,15 @@ function updateTable(){
         document.getElementById('semesterCount-' + row).textContent = tableContents[row]['semesterCountDisplay'];
         document.getElementById('semester-' + row).textContent = tableContents[row]['semesterDisplay'];
     }
+
+    // Update URL hash.
+    let hash = '#' + year + ',' + month;
+    for(let row = 0; row < rowCount; row++){
+        if(document.getElementById('checkbox-' + row).checked){
+            hash += ',' + row;
+        }
+    }
+    globalThis.location.replace(hash);
 }
 
 let checkboxLimit = 4;
@@ -204,7 +213,8 @@ let rowCount = 16;
 let year = 0;
 
 window.onload = function(){
-    document.getElementById('month').onchange = function(){
+    const monthElement = document.getElementById('month');
+    monthElement.onchange = function(){
         month = Number(this.value);
         updateTable();
     };
@@ -241,5 +251,25 @@ window.onload = function(){
         };
     }
 
-    resetAll();
+    const hash = globalThis.location.hash;
+    if(hash.length){
+        const selected = hash.substring(1).split(',').map(function(i){
+          return Number.parseInt(i, 10);
+        });
+
+        year = selected[0];
+        yearElement.value = year;
+        month = selected[1];
+        monthElement.value = month;
+
+        for(let i = 2; i < selected.length; i++){
+            document.getElementById('checkbox-' + selected[i]).checked = true;
+            updateCheckboxes('checkbox-' + selected[i]);
+        }
+
+        updateTable();
+
+    }else{
+        resetAll();
+    }
 };
