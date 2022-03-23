@@ -200,7 +200,7 @@ function updateTable(){
     let hash = '#' + year + ',' + month;
     for(let row = 0; row < rowCount; row++){
         if(document.getElementById('checkbox-' + row).checked){
-            hash += ',' + row;
+            hash += ',' + (row + 1);
         }
     }
     globalThis.location.replace(hash);
@@ -266,11 +266,11 @@ window.onload = function(){
             if(i >= 6){
                 break;
             }
-            if(selected[i] < 0 || selected[i] >= 16){
+            if(selected[i] < 1 || selected[i] > 16){
                 continue;
             }
-            document.getElementById('checkbox-' + selected[i]).checked = true;
-            updateCheckboxes('checkbox-' + selected[i]);
+            document.getElementById('checkbox-' + (selected[i] - 1)).checked = true;
+            updateCheckboxes('checkbox-' + (selected[i] - 1));
         }
 
         updateTable();
