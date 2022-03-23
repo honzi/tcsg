@@ -263,6 +263,9 @@ window.onload = function(){
         monthElement.value = month;
 
         for(let i = 2; i < selected.length; i++){
+            if(i >= 6){
+                break;
+            }
             document.getElementById('checkbox-' + selected[i]).checked = true;
             updateCheckboxes('checkbox-' + selected[i]);
         }
